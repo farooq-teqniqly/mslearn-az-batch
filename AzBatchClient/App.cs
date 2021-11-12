@@ -1,30 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Batch;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace AzBatchClient
 {
     public class App
     {
-        private readonly BatchClient batchClient;
+        private readonly BatchPoolFactory poolFactory;
         private readonly ILogger<App> logger;
 
-        public App(BatchClient batchClient, ILogger<App> logger)
+        public App(
+            BatchPoolFactory poolFactory,
+            ILogger<App> logger)
         {
-            this.batchClient = batchClient;
+            this.poolFactory = poolFactory;
             this.logger = logger;
         }
 
         public async Task Run()
         {
-            foreach (var app in batchClient.ApplicationOperations.ListApplicationSummaries())
-            {
-                this.logger.LogInformation($"Installed app: {app.Id}\t{app.Versions[0]}");
-            }
+            this.logger.LogInformation("Creating batch pool...");
+
+            await this.poolFactory.CreateBatchPoolAsync(
+                "WinFFmpegPool",
+                "STANDARD_D2_v2",
+                0);
+
+            this.logger.LogInformation("Batch pool created.");
         }
     }
 }

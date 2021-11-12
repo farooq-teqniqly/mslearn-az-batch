@@ -5,7 +5,6 @@ using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure.Batch;
 using Microsoft.Azure.Batch.Auth;
-using Microsoft.Azure.Batch.Protocol;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -75,6 +74,13 @@ namespace AzBatchClient
             var batchClient = BatchClient.Open(sharedKeyCredentials);
 
             services.AddSingleton(batchClient);
+
+            services.AddSingleton<BatchPoolFactory>();
+            services.AddSingleton<ImageReferenceFactory>();
+            services.AddSingleton<VirtualMachineConfigurationFactory>();
+
+            services.AddSingleton<ApplicationPackageReferenceFactory>(
+                provider => new FFMpegApplicationPackageReferenceFactory());
         }
 
         private static void ConfigureAzureStorage(IServiceCollection services)

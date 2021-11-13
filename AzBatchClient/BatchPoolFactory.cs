@@ -27,8 +27,7 @@ namespace AzBatchClient
         }
         public async Task CreateBatchPoolAsync(
             string poolId,
-            string virtualMachineSize,
-            byte targetDedicatedComputeNodes)
+            string virtualMachineSize)
         {
             var imageReference = this.imageReferenceFactory.CreateImageReference();
             
@@ -39,7 +38,6 @@ namespace AzBatchClient
                 poolId,
                 virtualMachineSize,
                 virtualMachineConfiguration,
-                targetDedicatedComputeNodes,
                 this.options.FFMpegPool.NodeCount);
 
             pool.ApplicationPackageReferences = new List<ApplicationPackageReference>

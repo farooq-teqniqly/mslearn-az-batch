@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Azure.Storage;
 using Azure.Storage.Blobs;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DependencyCollector;
@@ -81,6 +82,8 @@ namespace AzBatchClient
 
             services.AddSingleton<ApplicationPackageReferenceFactory>(
                 provider => new FFMpegApplicationPackageReferenceFactory());
+
+            services.AddSingleton<ResourceFileFactory>();
         }
 
         private static void ConfigureAzureStorage(IServiceCollection services)
@@ -89,9 +92,10 @@ namespace AzBatchClient
             services.AddSingleton(storageOptions);
 
             var blobServiceClient = new BlobServiceClient(storageOptions.ConnectionString);
-            var containerClient = blobServiceClient.GetBlobContainerClient(storageOptions.Container);
-
-            services.AddSingleton<BlobContainerClient>(provider => containerClient);
+            services.AddSingleton(blobServiceClient);
+            services.AddSingleton<InputContainerClient>();
+            services.AddSingleton<OutputContainerClient>();
+            services.AddSingleton<FileUploader>();
         }
     }
 }

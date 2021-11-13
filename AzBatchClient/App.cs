@@ -22,8 +22,7 @@ namespace AzBatchClient
 
             await this.poolFactory.CreateBatchPoolAsync(
                 "WinFFmpegPool",
-                "STANDARD_D2_v2",
-                0);
+                "STANDARD_A1_v2");
 
             this.logger.LogInformation("Batch pool created.");
         }

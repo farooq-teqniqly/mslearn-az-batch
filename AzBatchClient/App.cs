@@ -34,8 +34,6 @@ namespace AzBatchClient
 
         public async Task Run()
         {
-            var currentDir = Assembly.GetExecutingAssembly().Location;
-
             this.logger.LogInformation("Creating batch pool...");
 
             await this.poolFactory.CreateBatchPoolAsync(

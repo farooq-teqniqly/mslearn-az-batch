@@ -8,7 +8,11 @@ namespace AzBatchClient
     {
         private readonly BlobServiceClient blobServiceClient;
         private readonly string containerName;
+
         public BlobContainerClient Container { get; }
+
+        public virtual string ResourceType { get; protected set; } = "b";
+
         protected AppContainerClient(BlobServiceClient blobServiceClient, string containerName)
         {
             this.blobServiceClient = blobServiceClient;
@@ -17,6 +21,11 @@ namespace AzBatchClient
         }
 
         protected abstract void ConfigureSasPermissions(BlobSasBuilder sasBuilder);
+        protected abstract Uri GenerateSasUri(
+            BlobServiceClient blobServiceClient,
+            BlobSasBuilder sasBuilder,
+            string containerName,
+            string blobName);
 
         public string GetSasUri(string blobName)
         {
@@ -24,18 +33,19 @@ namespace AzBatchClient
             {
                 BlobContainerName = this.containerName,
                 BlobName = blobName,
-                Resource = "b",
+                Resource = this.ResourceType,
                 ExpiresOn = DateTimeOffset.Now.AddHours(2)
             };
 
             this.ConfigureSasPermissions(sasBuilder);
 
-            return this
-                .blobServiceClient
-                .GetBlobContainerClient(this.containerName)
-                .GetBlobClient(blobName)
-                .GenerateSasUri(sasBuilder)
+            return this.GenerateSasUri(
+                this.blobServiceClient,
+                sasBuilder,
+                this.containerName,
+                blobName)
                 .ToString();
         }
+
     }
 }

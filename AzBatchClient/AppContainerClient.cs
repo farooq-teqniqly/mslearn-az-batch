@@ -33,6 +33,7 @@ namespace AzBatchClient
             return this
                 .blobServiceClient
                 .GetBlobContainerClient(this.containerName)
+                .GetBlobClient(blobName)
                 .GenerateSasUri(sasBuilder)
                 .ToString();
         }

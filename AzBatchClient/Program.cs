@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Azure.Storage;
 using Azure.Storage.Blobs;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DependencyCollector;
@@ -60,6 +59,9 @@ namespace AzBatchClient
 
             ConfigureAzureStorage(services);
             ConfigureAzureBatch(services);
+
+            var appOptions = configuration.GetSection("App").Get<AppOptions>();
+            services.AddSingleton(appOptions);
         }
 
         private static void ConfigureAzureBatch(IServiceCollection services)

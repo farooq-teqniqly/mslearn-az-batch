@@ -20,6 +20,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InputFiles", "InputFiles", 
 		InputFiles\6.mp4 = InputFiles\6.mp4
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{C149566A-FCF8-4B35-8CA3-245AD211707D}"
+	ProjectSection(SolutionItems) = preProject
+		deploy\BatchAccount.bicep = deploy\BatchAccount.bicep
+		deploy\Main.bicep = deploy\Main.bicep
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

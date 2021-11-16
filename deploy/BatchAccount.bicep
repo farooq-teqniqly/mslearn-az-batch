@@ -1,6 +1,22 @@
 param location string
 param baseName string
 
+var containerNames = [
+  'input'
+  'output'
+]
+
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: '${baseName}-insights'
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
+  }
+}
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   name: '${replace(baseName, '-', '')}sto'
   location: location
@@ -26,6 +42,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   }
 }
 
+resource blobContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2020-08-01-preview' = [for name in containerNames: {
+  name: name
+  parent: storageAccount::defaultBlobService
+  properties:{
+    publicAccess: 'None'
+  }
+}]
+
 resource batchAccount 'Microsoft.Batch/batchAccounts@2020-05-01' = {
   name: '${replace(baseName, '-', '')}ba'
   location: location
@@ -44,5 +68,8 @@ output deploymentOutputs object = {
   }
   storage: {
     connectionString: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value}'
+  }
+  appInsights: {
+    key: appInsights.properties.InstrumentationKey
   }
 }

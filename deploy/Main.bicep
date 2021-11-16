@@ -25,3 +25,18 @@ module batchAccountDeploy 'BatchAccount.bicep' = {
     location: location
   }
 }
+
+output deploymentOutputs object = {
+  resourceGroupName: rgName
+  batchAccountDeployment: {
+    accountName: batchAccountDeploy.outputs.deploymentOutputs.batch.accountName
+    endpointUrl: batchAccountDeploy.outputs.deploymentOutputs.batch.endpointUrl
+    key: batchAccountDeploy.outputs.deploymentOutputs.batch.key
+  }
+  storageDeployment: {
+    connectionString: batchAccountDeploy.outputs.deploymentOutputs.storage.connectionString
+  }
+  appInsightsDeployment: {
+    instrumentationKey: batchAccountDeploy.outputs.deploymentOutputs.appInsights.key
+  }
+}

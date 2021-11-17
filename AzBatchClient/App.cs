@@ -55,7 +55,7 @@ namespace AzBatchClient
             await this.poolFactory.CreateBatchPoolAsync(
                 poolId,
                 "STANDARD_A1_v2");
-
+            
             this.logger.LogInformation("Batch pool created.");
 
             this.logger.LogInformation("Uploading files...");

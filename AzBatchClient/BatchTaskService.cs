@@ -28,7 +28,7 @@ namespace AzBatchClient
 
             for (var i = 0; i < resourceFiles.Count; i++)
             {
-                var taskId = $"Task={i}";
+                var taskId = $"Task-{i}";
                 var appPath = $"%AZ_BATCH_APP_PACKAGE_{packageReference.ApplicationId}#{packageReference.Version}%";
                 var inputFile = resourceFiles[i].FilePath;
                 var outputMediaFile = $"${Path.GetFileNameWithoutExtension(inputFile)}.gif";

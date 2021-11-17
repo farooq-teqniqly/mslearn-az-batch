@@ -86,6 +86,7 @@ namespace AzBatchClient
                 provider => new FFMpegApplicationPackageReferenceFactory());
 
             services.AddSingleton<ResourceFileFactory>();
+            services.AddSingleton<BatchJobFactory>();
         }
 
         private static void ConfigureAzureStorage(IServiceCollection services)
@@ -98,6 +99,7 @@ namespace AzBatchClient
             services.AddSingleton<InputContainerClient>();
             services.AddSingleton<OutputContainerClient>();
             services.AddSingleton<FileUploader>();
+            services.AddSingleton<BatchTaskService>();
         }
     }
 }
